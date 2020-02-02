@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PDF{% endblock %}
+
+{% block body %}
+    {% include('navbar/index.html.twig') %}
+    {% if app.user %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4"><p class="text-right">Szczecin, dnia {{ absenceDoc.getActualDate()|date("m/d/Y") }}</p></div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 center-block">
+                    PODANIE O UROP
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">Nazwisko i imię</div>
+                <div class="col-md-4 font-italic font-weight-bold"><p class="text-left">{{ app.user.surname }} {{ app.user.name }}</p></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">Dział</div>
+                <div class="col-md-3 font-italic font-weight-bold"><p class="text-left">{{ app.user.department.name }}</p></div>
+                <div class="col-md-3">funkcja</div>
+                <div class="col-md-3 font-italic font-weight-bold"><p class="text-left">{{ app.user.position.name }}</p></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Proszę o udzielenie urlopu od dnia</div>
+                <div class="col-md-6">{{ absenceDoc.getDateFrom()|date("m/d/Y") }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">do dnia</div>
+                <div class="col-md-6">{{ absenceDoc.getDateTo()|date("m/d/Y") }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Rodzaj urlopu</div>
+                <div class="col-md-6">
+                    <div class="some-space">{{ absenceDoc.absence.name }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="signature">Podpis pracownika</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 center-block"><div class="some-space">Wyrażam zgodę na udzielenie urlopu w wyżej wymienionym terminie.</div></div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"><div class="signature">Data i podpis</div></div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <a class="btn-primary btn" href="{{ path('app_userabsencedocument_list') }}">OK</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

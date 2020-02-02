@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserAbsenceDocumentsController!{% endblock %}
+
+{% block body %}
+    {% include('navbar/index.html.twig') %}
+    {% if app.user %}
+        <div class="container">
+            {{ form(form) }}
+        </div>
+    {% endif %}
+{% endblock %}

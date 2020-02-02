@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% import 'macro/deleteModalMacro.html.twig' as macro %}
+
+{% block title %}Hello UserAbsenceDocumentsController!{% endblock %}
+
+{% block body %}
+    {% include('navbar/index.html.twig') %}
+    {% if app.user %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Hi, {{ app.user.username }}</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>All absence documents ({{ pagination.getTotalItemCount }})</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="table-responsive-sm" id="responsiveTable">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Absence</th>
+                            <th scope="col">Created</th>
+                            <th scope="col">From</th>
+                            <th scope="col">To</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for row in pagination %}
+
+                        <tr>
+                            <td>
+                                <div class="row-option-dropdown dropdown">
+                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        <i class="fa fa-bars"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal-{{ row.id }}">
+                                            <i class="fa fa-trash fa-lg"></i> Delete
+                                        </a>
+                                        <a class="dropdown-item" href="{{ path('app_userabsencedocument_downloadpdf', {id: row.id}) }}">
+                                            <i class="fa fa-download fa-lg"></i> Download
+                                        </a>
+                                        <a class="dropdown-item" href="{{ path('app_userabsencedocument_showpdf',{id: row.id}) }}" target="_blank">
+                                            <i class="fa fa-file-pdf-o fa-lg"></i> Show
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="row-option-inline">
+                                    <a type="submit" title="Delete document."
+                                            data-toggle="modal" data-target="#deleteModal-{{ row.id }}">
+                                        <i class="btn btn-primary fa fa-trash fa-lg"></i>
+                                    </a>
+                                    <a type="submit" title="Download document."
+                                            href="{{ path('app_userabsencedocument_downloadpdf', {id: row.id}) }}">
+                                        <i class="btn btn-primary fa fa-download fa-lg"></i>
+                                    </a>
+                                    <a type="submit" title="Open document."
+                                            href="{{ path('app_userabsencedocument_showpdf',{id: row.id}) }}" target="_blank">
+                                        <i class="btn btn-primary fa fa-file-pdf-o fa-lg"></i>
+                                    </a>
+                                </div>
+
+                                {{ macro.create_delete_modal('deleteModal-'~row.id, row.id) }}
+                            </td>
+
+                            <td>{{ row.absence }}</td>
+                            <td>{{ row.actualDate|date("m/d/Y") }}</td>
+                            <td>{{ row.dateFrom|date("m/d/Y") }}</td>
+                            <td>{{ row.dateTo|date("m/d/Y") }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navigation center-block">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+
+        function deleteUserAbsenceDocument(id) {
+            var url = '{{ path('app_userabsencedocument_delete', {'id': 'id'}) }}';
+            url = url.replace("id",id);
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (result) {
+                    console.log(result);
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log(`Error ${error}`);
+                }
+            });
+        }
+
+        function downloadPdfUserAbsenceDocument(id) {
+            var url = '{{ path('app_userabsencedocument_downloadpdf', {'id': 'id'}) }}';
+            url = url.replace("id",id);
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (error) {
+                    console.log(`Error ${error}`);
+                }
+            });
+        }
+
+        function showPdfUserAbsenceDocument(id) {
+            var url = '{{ path('app_userabsencedocument_showpdf', {'id': 'id'}) }}';
+            url = url.replace("id",id);
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (result) {
+                    console.log(result);
+                },
+                error: function (error) {
+                    console.log(`Error ${error}`);
+                }
+            });
+        }
+    </script>
+{% endblock javascripts %}

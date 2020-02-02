@@ -1,0 +1,50 @@
+@media(max-width: 775px) {
+    .table{
+        font-size: x-small;
+    }
+    .th {
+        width: 30px;
+    }
+    .row-option-inline{
+        display: none;
+    }
+}
+
+@media (min-width: 776px) {
+    .row-option-dropdown{
+        display: none;
+    }
+}
+
+@page {
+    size: auto;
+    margin: 0;
+}
+
+.container{
+    padding: 50px;
+}
+
+.center-block{
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+    text-align: center;
+}
+
+.signature{
+    border-top: 2px dotted #8c8b8b;
+}
+
+.some-space{
+    padding-bottom: 30px;
+}
+
+hr {
+    border:none;
+    border-top:1px dotted #f00;
+    color:#fff;
+    background-color:#fff;
+    height:1px;
+    width:50%;
+}
